@@ -1,9 +1,10 @@
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 const Web3 = require("web3");
+require("dotenv").config();
 const { interface, bytecode } = require("./compile");
 
 provider = new HDWalletProvider(
-  "custom parrot work know food nice fix screen solid noodle shrug divorce", //test key, no money here ;)
+  process.env.PRIVATE_KEY,
   "https://goerli.infura.io/v3/9d221446523849d7805a16d5aaed57ca"
 );
 const web3 = new Web3(provider);
