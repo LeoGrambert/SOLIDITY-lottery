@@ -46,4 +46,54 @@ describe("Lottery contract", () => {
       }
       assert.equal(10, players.length);
     });
+    it("should require a minimum amount of ether to enter", async () => {
+        try {
+            await lottery.methods.enter().send({
+              from: accounts[0],
+              value: web3.utils.toWei("0.002", "ether"),
+            });
+            const players = await lottery.methods.getPlayers().call({
+              from: accounts[0],
+            });
+            assert.equal(1, players.length);
+        } catch (err) {
+            assert(err);
+        }
+    });
+    it("should restrict pickWinner function to manager", async () => {
+        try {
+            await lottery.methods.pickWinner().send({
+                from: accounts[1]
+            });
+            assert(false);
+        } catch (err) {
+            assert(err);
+        }
+    });
+    it("should send money to the winner and reset the players array", async () => {
+        const gameManager = accounts[0];
+        const player = accounts[1];
+        const amountPlayed = web3.utils.toWei("2", "ether");
+        await lottery.methods.enter().send({
+          from: player,
+          value: amountPlayed,
+        });
+        const newSmartContractBalance = await web3.eth.getBalance(
+            lottery.options.address
+        );
+        assert.equal(amountPlayed, newSmartContractBalance);
+        const initialBalance = await web3.eth.getBalance(player);
+        await lottery.methods.pickWinner().send({ from: gameManager });
+        const finalBalance = await web3.eth.getBalance(player);
+        const difference = finalBalance - initialBalance;
+        const players = await lottery.methods.getPlayers().call({
+            from: gameManager,
+        });
+        const resetSmartContractBalance = await web3.eth.getBalance(
+            lottery.options.address
+        );
+        assert(difference > web3.utils.toWei("1.9", "ether"));
+        assert.equal(0, players.length);
+        assert.equal(0, resetSmartContractBalance);
+    });
 });
