@@ -8,16 +8,42 @@ let accounts;
 let lottery;
 
 beforeEach(async () => {
-  accounts = await web3.eth.getAccounts();
-  lottery = await new web3.eth.Contract(JSON.parse(interface))
-    .deploy({
-      data: bytecode,
-    })
-    .send({ from: accounts[0], gas: "1000000" });
+    accounts = await web3.eth.getAccounts();
+    lottery = await new web3.eth.Contract(JSON.parse(interface))
+      .deploy({
+        data: bytecode,
+      })
+      .send({ from: accounts[0], gas: "1000000" });
 });
 
 describe("Lottery contract", () => {
-  it("should deploy a contract", () => {
-    assert.ok(lottery.options.address);
-  });
+    it("should deploy a contract", () => {
+      assert.ok(lottery.options.address);
+    });
+    it("should allows one account to enter", async () => {
+      await lottery.methods.enter().send({
+          from: accounts[0],
+          value: web3.utils.toWei('0.02', 'ether')
+      });
+      const players = await lottery.methods.getPlayers().call({
+          from: accounts[0]
+      });
+      assert.equal(accounts[0], players[0]);
+      assert.equal(1, players.length);
+    });
+    it("should allows multiple accounts to enter", async () => {
+      for (let i = 0; i < 10; i++) {
+        await lottery.methods.enter().send({
+          from: accounts[i],
+          value: web3.utils.toWei("0.02", "ether"),
+        });
+      }
+      const players = await lottery.methods.getPlayers().call({
+        from: accounts[0],
+      });
+      for (let i = 0; i < players.length; i++) {
+        assert.equal(accounts[i], players[i]);
+      }
+      assert.equal(10, players.length);
+    });
 });

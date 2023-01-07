@@ -5,7 +5,7 @@ const { interface, bytecode } = require("./compile");
 
 provider = new HDWalletProvider(
   process.env.PRIVATE_KEY,
-  "https://goerli.infura.io/v3/9d221446523849d7805a16d5aaed57ca"
+  process.env.INFURA_URL
 );
 const web3 = new Web3(provider);
 
