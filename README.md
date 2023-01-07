@@ -29,7 +29,7 @@ node deploy.js
 
 3/ Copy the interface and your account address from terminal
 
-## Set the front application ##
+## Set up the front application ##
 
 Put copied information and pasted it in /src/utils/lottery.js
 
