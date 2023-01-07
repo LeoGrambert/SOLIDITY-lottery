@@ -1,3 +1,27 @@
 .DS_Store
-node_modules
-.env
+
+Lottery/.DS_Store
+Lottery/node_modules
+Lottery/.env
+
+# dependencies
+Front/node_modules/
+Front/.pnp
+Front/.pnp.js
+
+# testing
+Front/coverage
+
+# production
+Front/build
+
+# misc
+Front/.DS_Store
+Front/.env.local
+Front/.env.development.local
+Front/.env.test.local
+Front/.env.production.local
+
+Front/npm-debug.log*
+Front/yarn-debug.log*
+Front/yarn-error.log*
