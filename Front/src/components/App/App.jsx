@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 import lottery from "../../utils/lottery";
 import web3 from "../../utils/web3";
 import Footer from "../Footer/Footer";
+import Form from "../Form/Form";
 
 const App = () => {
   const [manager, setManager] = useState('');
   const [players, setPlayers] = useState([]);
   const [balance, setBalance] = useState('');
+  const [value, setValue] = useState('');
 
   useEffect(() => {
     (async () => setManager(await lottery.methods.manager().call()))();
@@ -20,6 +22,8 @@ const App = () => {
         <h2>Lottery Contract</h2>
         {manager?.length && (<p>This contract is managed by {manager}</p>)}
         There are currently {players.length} people entered, competing to win {web3.utils.fromWei(balance, 'ether')} ether!
+        <hr />
+        <Form value={value} setValue={setValue} />
         <Footer />
     </div>
   );
