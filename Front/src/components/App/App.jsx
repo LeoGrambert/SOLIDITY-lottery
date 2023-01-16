@@ -2,6 +2,7 @@ import "./App.css";
 import React, { useEffect, useState } from "react";
 import lottery from "../../utils/lottery";
 import web3 from "../../utils/web3";
+import { weiToEther } from "../../utils/helpers";
 import Footer from "../Footer/Footer";
 import Form from "../Form/Form";
 
@@ -9,7 +10,7 @@ const App = () => {
   const [manager, setManager] = useState('');
   const [players, setPlayers] = useState([]);
   const [balance, setBalance] = useState('');
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(0);
 
   useEffect(() => {
     (async () => setManager(await lottery.methods.manager().call()))();
@@ -19,12 +20,12 @@ const App = () => {
 
   return (
     <div className="App">
-        <h2>Lottery Contract</h2>
-        {manager?.length && (<p>This contract is managed by {manager}</p>)}
-        There are currently {players.length} people entered, competing to win {web3.utils.fromWei(balance, 'ether')} ether!
-        <hr />
-        <Form value={value} setValue={setValue} />
-        <Footer />
+      <h2>Lottery Contract</h2>
+      {manager?.length && (<p>This contract is managed by {manager}</p>)}
+      There are currently {players.length} people entered, competing to win {weiToEther(balance)} ether!
+      <hr />
+      <Form value={value} setValue={setValue} />
+      <Footer />
     </div>
   );
 }
