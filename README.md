@@ -47,3 +47,7 @@ With Mocha
 cd Lottery
 npm run test
 ```
+
+## App Result ##
+
+<img src="https://res.cloudinary.com/dj6sc2eiq/image/upload/v1673895646/solidity-lottery/Screenshot_from_2023-01-16_20-00-32_luapce.png">

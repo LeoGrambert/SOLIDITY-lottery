@@ -14,6 +14,7 @@ const PickAWinner = () => {
     }, []);
 
     const onClick = async () => {
+        setErrorTransaction('');
         const accounts = await web3.eth.getAccounts();
         setMessage('Waiting on transaction success...');
         try {
