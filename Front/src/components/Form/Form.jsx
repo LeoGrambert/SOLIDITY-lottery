@@ -7,6 +7,7 @@ import "./Form.css";
 const Form = ({ value, setValue }) => {
     const [message, setMessage] = useState('');
     const [errorAmount, setErrorAmount] = useState('');
+    const [errorTransaction, setErrorTransaction] = useState('');
     const [displayErrorAmount, setDisplayErrorAmount] = useState(false);
 
     useEffect(() => {
@@ -18,14 +19,19 @@ const Form = ({ value, setValue }) => {
 
     const onSubmit = async (event) => {
         event.preventDefault();
+        setErrorTransaction('');
         setDisplayErrorAmount(true);
         if (errorAmount?.length) return;
         const accounts = await web3.eth.getAccounts();
         setMessage('Waiting on transaction success...');
-        await lottery.methods.enter().send({
-            from: accounts[0],
-            value: etherToWei(value)
-        });
+        try {
+            await lottery.methods.enter().send({
+                from: accounts[0],
+                value: etherToWei(value)
+            });
+        } catch (err) {
+            setErrorTransaction(err.message);
+        }
         setMessage('You have been entered!');
     }
 
@@ -44,8 +50,12 @@ const Form = ({ value, setValue }) => {
           <button>
             Enter
           </button>
-          <hr />
-          <h2>{message}</h2>
+          {message.length || errorTransaction.length ? (
+            <>
+                <hr />
+                <h2>{errorTransaction.length ? errorTransaction : message}</h2>            
+            </>
+          ) : null}
         </form>
     );
 }

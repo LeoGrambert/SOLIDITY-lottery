@@ -24,7 +24,7 @@ INFURA_URL=******
 2/ Call deploy script in order to deploy the smart contract on Goerli Testnet
 ```
 cd Lottery
-node deploy.js
+npm run deploy
 ```
 
 3/ Copy the interface and your account address from terminal

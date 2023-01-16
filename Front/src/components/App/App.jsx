@@ -5,6 +5,7 @@ import web3 from "../../utils/web3";
 import { weiToEther } from "../../utils/helpers";
 import Footer from "../Footer/Footer";
 import Form from "../Form/Form";
+import PickAWinner from "../PickAWinner/PickAWinner";
 
 const App = () => {
   const [manager, setManager] = useState('');
@@ -25,6 +26,8 @@ const App = () => {
       There are currently {players.length} people entered, competing to win {weiToEther(balance)} ether!
       <hr />
       <Form value={value} setValue={setValue} />
+      <hr />
+      <PickAWinner />
       <Footer />
     </div>
   );
